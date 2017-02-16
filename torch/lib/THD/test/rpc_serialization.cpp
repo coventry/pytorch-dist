@@ -5,7 +5,8 @@
 #include <typeinfo>
 #include <vector>
 
-#include "../base/Type.hpp"
+#include <THPP/Type.hpp>
+
 #include "../master_worker/common/RPC.hpp"
 #include "TH/THStorage.h"
 
@@ -29,23 +30,23 @@ int main() {
   uint16_t fid = unpackFunctionId(msg);
   assert(fid == 1);
 
-  assert(peekType(msg) == Type::FLOAT);
+  assert(peekType(msg) == thpp::Type::FLOAT);
   double arg1 = unpackFloat(msg);
   assert(arg1 == 1.0);
 
-  assert(peekType(msg) == Type::LONG);
+  assert(peekType(msg) == thpp::Type::LONG);
   long long arg2 = unpackInteger(msg);
   assert(arg2 == 100);
 
-  assert(peekType(msg) == Type::INT);
+  assert(peekType(msg) == thpp::Type::INT);
   long long arg3 = unpackInteger(msg);
   assert(arg3 == -12);
 
-  assert(peekType(msg) == Type::LONG_LONG);
+  assert(peekType(msg) == thpp::Type::LONG_LONG);
   long long arg4 = unpackInteger(msg);
   assert(arg4 == LLONG_MAX);
 
-  assert(peekType(msg) == Type::LONG_STORAGE);
+  assert(peekType(msg) == thpp::Type::LONG_STORAGE);
   THLongStorage *storage2 = unpackTHLongStorage(msg);
   assert(storage2->size == STORAGE_SIZE);
   for (long i = 0; i < STORAGE_SIZE; i++)

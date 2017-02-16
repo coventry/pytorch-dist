@@ -7,13 +7,14 @@
 #include <unordered_map>
 
 #include "../../process_group/General.hpp"
-#include "../../base/Tensor.hpp"
-#include "../../base/Traits.hpp"
-#include "../../base/storages/THStorage.hpp"
-#include "../../base/tensors/THTensor.hpp"
 #include "../common/Functions.hpp"
 #include "../common/RPC.hpp"
 #include "../master/Master.hpp"
+#include "THPP/Storage.hpp"
+#include "THPP/Tensor.hpp"
+#include "THPP/Traits.hpp"
+#include "THPP/storages/THStorage.hpp"
+#include "THPP/tensors/THTensor.hpp"
 #include "Worker.hpp"
 
 namespace thd {
@@ -29,11 +30,11 @@ void sendValueToMaster(double value) {
   dataChannel->send(FloatScalar(value), 0);
 }
 
-Tensor* unpackRetrieveTensor(rpc::RPCMessage& message) {
+thpp::Tensor* unpackRetrieveTensor(rpc::RPCMessage& message) {
   return workerTensors.at(unpackTensor(message)).get();
 }
 
-Storage* unpackRetrieveStorage(rpc::RPCMessage& message) {
+thpp::Storage* unpackRetrieveStorage(rpc::RPCMessage& message) {
   return workerStorages.at(unpackStorage(message)).get();
 }
 

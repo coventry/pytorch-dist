@@ -25,14 +25,8 @@ namespace thpp {
 
 template<typename real>
 struct THCTensor : public interface_traits<real>::tensor_interface_type {
-  friend class THCTensor<unsigned char>;
-  friend class THCTensor<char>;
-  friend class THCTensor<short>;
-  friend class THCTensor<int>;
-  friend class THCTensor<long>;
-  friend class THCTensor<float>;
-  friend class THCTensor<double>;
-  friend class THCTensor<half>;
+  template<typename U>
+  friend class THCTensor;
 
 private:
   using interface_type = typename interface_traits<real>::tensor_interface_type;

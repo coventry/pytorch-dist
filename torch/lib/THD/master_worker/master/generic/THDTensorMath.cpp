@@ -17,14 +17,13 @@ void THDTensor_(fill)(THDTensor *tensor, real value) {
   );
 }
 
-// TODO implement
 void THDTensor_(zero)(THDTensor *r) {
-  throw std::runtime_error("fill not implemented yet");
+  THDTensor_(fill)(r, 0);
 }
 
 void THDTensor_(zeros)(THDTensor *tensor, THLongStorage *size) {
   THDTensor_(resize)(tensor, size, nullptr);
-  THDTensor_(fill)(tensor, 0);
+  THDTensor_(zero)(tensor);
 }
 
 void THDTensor_(ones)(THDTensor *tensor, THLongStorage *size) {
@@ -196,14 +195,20 @@ void THDTensor_(catArray)(THDTensor *result, THDTensor **inputs,
   size = THLongStorage_newWithSize(ndim);
 
   for (int i = 0; i < ndim; i++) {
-    long dimSize = i < inputs[0]->nDimension ? inputs[0]->size[i] : 1;
+    long dimSize = i < inputs[0]->nDimension ?
+                   inputs[0]->size[i] :
+                   THMin(inputs[0]->nDimension, 1);
     if (i == ldimension) {
       for (int j = 1; j < numInputs; j++) {
-        dimSize += i < inputs[j]->nDimension ? inputs[j]->size[i] : 1;
+        dimSize += i < inputs[j]->nDimension ?
+                   inputs[j]->size[i] :
+                   THMin(inputs[j]->nDimension, 1);
       }
     } else {
       for (int j = 1; j < numInputs; j++) {
-        long sz = (i < inputs[j]->nDimension ? inputs[j]->size[i] : 1);
+        long sz = i < inputs[j]->nDimension ?
+                  inputs[j]->size[i] :
+                  THMin(inputs[j]->nDimension, 1);
         if (dimSize != sz && dimSize && sz) {
           THLongStorage_free(size);
           THError("inconsistent tensor sizes");

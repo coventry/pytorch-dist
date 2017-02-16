@@ -25,13 +25,8 @@ namespace thpp {
 
 template<typename real>
 struct THTensor : public interface_traits<real>::tensor_interface_type {
-  friend class THTensor<unsigned char>;
-  friend class THTensor<char>;
-  friend class THTensor<short>;
-  friend class THTensor<int>;
-  friend class THTensor<long>;
-  friend class THTensor<float>;
-  friend class THTensor<double>;
+  template<typename U>
+  friend class THTensor;
 
 private:
   using interface_type = typename interface_traits<real>::tensor_interface_type;
@@ -83,6 +78,56 @@ public:
   virtual THTensor& unfold(const Tensor& src, int dimension,
                            long size, long step) override;
 
+  virtual THTensor& diag(const Tensor& src, int k) override;
+  virtual THTensor& eye(long n, long m) override;
+  virtual THTensor& range(scalar_type xmin, scalar_type xmax, scalar_type step) override;
+  // virtual Tensor& randperm() override; TODO
+  virtual THTensor& sort(const Tensor& ri, const Tensor& src,
+                       int dimension, int desc) override;
+  virtual THTensor& topk(const Tensor& ri, const Tensor& src,
+                       long k, int dim, int dir, int sorted) override;
+  virtual THTensor& tril(const Tensor& src, long k) override;
+  virtual THTensor& triu(const Tensor& src, long k) override;
+  virtual THTensor& catArray(const std::vector<Tensor*>& inputs,
+                             int dimension) override;
+  virtual int equal(const Tensor& other) const override;
+  virtual THTensor& ltTensor(const Tensor& r, const Tensor& tb) override;
+  virtual THTensor& leTensor(const Tensor& r, const Tensor& tb) override;
+  virtual THTensor& gtTensor(const Tensor& r, const Tensor& tb) override;
+  virtual THTensor& geTensor(const Tensor& r, const Tensor& tb) override;
+  virtual THTensor& neTensor(const Tensor& r, const Tensor& tb) override;
+  virtual THTensor& eqTensor(const Tensor& r, const Tensor& tb) override;
+  virtual THTensor& ltTensorT(const Tensor& ta, const Tensor& tb) override;
+  virtual THTensor& leTensorT(const Tensor& ta, const Tensor& tb) override;
+  virtual THTensor& gtTensorT(const Tensor& ta, const Tensor& tb) override;
+  virtual THTensor& geTensorT(const Tensor& ta, const Tensor& tb) override;
+  virtual THTensor& neTensorT(const Tensor& ta, const Tensor& tb) override;
+  virtual THTensor& eqTensorT(const Tensor& ta, const Tensor& tb) override;
+
+  virtual THTensor& abs(const Tensor& src) override;
+  virtual THTensor& sigmoid(const Tensor& src) override;
+  virtual THTensor& log(const Tensor& src) override;
+  virtual THTensor& log1p(const Tensor& src) override;
+  virtual THTensor& exp(const Tensor& src) override;
+  virtual THTensor& cos(const Tensor& src) override;
+  virtual THTensor& acos(const Tensor& src) override;
+  virtual THTensor& cosh(const Tensor& src) override;
+  virtual THTensor& sin(const Tensor& src) override;
+  virtual THTensor& asin(const Tensor& src) override;
+  virtual THTensor& sinh(const Tensor& src) override;
+
+  virtual THTensor& ltValue(const Tensor& t, scalar_type value) override;
+  virtual THTensor& leValue(const Tensor& t, scalar_type value) override;
+  virtual THTensor& gtValue(const Tensor& t, scalar_type value) override;
+  virtual THTensor& geValue(const Tensor& t, scalar_type value) override;
+  virtual THTensor& neValue(const Tensor& t, scalar_type value) override;
+  virtual THTensor& eqValue(const Tensor& t, scalar_type value) override;
+  virtual THTensor& ltValueT(const Tensor& t, scalar_type value) override;
+  virtual THTensor& leValueT(const Tensor& t, scalar_type value) override;
+  virtual THTensor& gtValueT(const Tensor& t, scalar_type value) override;
+  virtual THTensor& geValueT(const Tensor& t, scalar_type value) override;
+  virtual THTensor& neValueT(const Tensor& t, scalar_type value) override;
+  virtual THTensor& eqValueT(const Tensor& t, scalar_type value) override;
   virtual THTensor& fill(scalar_type value) override;
 
   virtual THTensor& gather(const Tensor& src, int dimension, const Tensor& index) override;

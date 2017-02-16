@@ -8,12 +8,12 @@ using namespace master;
 
 template<typename T>
 T THDTensor_(receiveValueFromWorker)(int worker_id) {
-  Type type = type_traits<real>::type;
-  if (isInteger(type)) {
+  thpp::Type type = thpp::type_traits<real>::type;
+  if (thpp::isInteger(type)) {
     IntScalar wrapped_value;
     dataChannel->receive(wrapped_value, worker_id);
     return static_cast<T>(wrapped_value.value());
-  } else if (isFloat(type)) {
+  } else if (thpp::isFloat(type)) {
     FloatScalar wrapped_value;
     dataChannel->receive(wrapped_value, worker_id);
     return static_cast<T>(wrapped_value.value());
@@ -101,7 +101,7 @@ static THDTensor* THDTensor_(_alloc)() {
 
 THDTensor* THDTensor_(new)() {
   THDTensor* tensor = THDTensor_(_alloc)();
-  Type constructed_type = type_traits<real>::type;
+  thpp::Type constructed_type = thpp::type_traits<real>::type;
   masterCommandChannel->sendMessage(
     packMessage(
       Functions::tensorConstruct,
@@ -115,7 +115,7 @@ THDTensor* THDTensor_(new)() {
 
 THDTensor* THDTensor_(newWithSize)(THLongStorage *sizes, THLongStorage *strides) {
   THDTensor* tensor = THDTensor_(_alloc)();
-  Type constructed_type = type_traits<real>::type;
+  thpp::Type constructed_type = thpp::type_traits<real>::type;
   masterCommandChannel->sendMessage(
     packMessage(
       Functions::tensorConstructWithSize,
